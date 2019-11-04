@@ -2,47 +2,94 @@
 
 using namespace std;
 
-int buscaBinaria(int arranjo[],int tamanho, int chave);
+int PesquisaBinaria (int x, int v[], int e, int d);
+void junta(int vet[], int inicio, int meio, int fim, int vet_aux[]);
+void merge_sort(int vet[], int inicio, int fim, int vet_aux[]);
+void merge_sort(int vet[], int tamanho);
 
 int main() {
-	/* Programa principal
-	*  Exemplo de utilização da função
-	*/
+	
+	int tamanho;
+	int chave,resultado;
 
-	int v[] = {4,6,8,9,17,18,25,42,39,65};
-	int tamanho = 10;
-	int p,res;
+	cout << "Digite o tamanho do vetor" << endl;
+	cin >> tamanho;
+	
+	int vetor[tamanho - 1];
+
+	for(int i = 0; i < tamanho; i++){
+		int valor = rand() % (100 + 1);
+		vetor[i] = valor;
+	}
+
+	  merge_sort(vetor, tamanho);
+	cout << "O vetor é:" << endl;
+
+	for ( int i = 0; i < tamanho; i++){
+		cout << vetor[i] << " ";
+	}
+	cout << endl;
 
 	cout << "Qual valor a ser procurado?" << endl;
+	cin >> chave;
 
-	cin >> p;
-
-	res=buscaBinaria(v,tamanho,p);
-	if (res==-1)
-		cout << "O valor procurado não foi encontrado.";
+ 	resultado = PesquisaBinaria (chave, vetor, 0, tamanho);
+	
+	if (resultado==-1)
+		cout << "O valor procurado não foi encontrado." << endl;
 	else
-		cout << "O valor procurado encontra-se na posição " << res;
+		cout << "O valor procurado encontra-se na posição " << resultado  << endl;
+
 	return 0;
 
 }
 
-int buscaBinaria(int arranjo[],int tamanho, int chave) {
-	// Na busca binária, espera-se que o vetor esteja ordenado
-	 
-	int i, f, meio;
-    i = 0;
-    f = tamanho -1;
 
-	while (i<=f) {
-		meio = (i+f)/2;
-		if (arranjo[meio]==chave)
-			return meio;
+int PesquisaBinaria (int x, int v[], int e, int d){
+	int meio = (e + d)/2;
+
+	if (v[meio] == x)
+		return meio;
+	if (e >= d)
+		return -1; // não encontrado
+	else
+		if (v[meio] < x)
+			return PesquisaBinaria(x, v, meio+1,      d);
+		else
+			return PesquisaBinaria(x, v,      e, meio-1);
+}
+
+void junta(int vet[], int inicio, int meio, int fim, int vet_aux[]) {
+	int esq = inicio;
+	int dir = meio;
+
+	for (int i = inicio; i < fim; ++i) {
+		if ((esq < meio) && ((dir >= fim) || (vet[esq] < vet[dir]))) {
+		vet_aux[i] = vet[esq];
+		++esq;
+		}
 		else {
-			if (chave>arranjo[meio])
-				i=meio+1;
-			else
-				f=meio-1;
+		vet_aux[i] = vet[dir];
+		++dir;
 		}
 	}
-	return -1;
+
+	for (int i = inicio; i < fim; ++i)
+	vet[i] = vet_aux[i];
+
+}
+
+void merge_sort(int vet[], int inicio, int fim, int vet_aux[]) {
+	if ((fim - inicio) < 2) return;
+
+	int meio = ((inicio + fim)/2);
+
+	merge_sort(vet, inicio, meio, vet_aux);
+	merge_sort(vet, meio, fim, vet_aux);
+	junta(vet, inicio, meio, fim, vet_aux);
+}
+
+void merge_sort(int vet[], int tamanho) {
+	int vet_aux[tamanho]; //vetor auxiliar
+	merge_sort(vet, 0, tamanho, vet_aux);
 }
