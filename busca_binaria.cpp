@@ -2,7 +2,7 @@
 
 using namespace std;
 
-int PesquisaBinaria (int x, int v[], int e, int d);
+int busca_binaria (int x, int v[], int e, int d);
 void junta(int vet[], int inicio, int meio, int fim, int vet_aux[]);
 void merge_sort(int vet[], int inicio, int fim, int vet_aux[]);
 void merge_sort(int vet[], int tamanho);
@@ -33,7 +33,7 @@ int main() {
 	cout << "Qual valor a ser procurado?" << endl;
 	cin >> chave;
 
- 	resultado = PesquisaBinaria (chave, vetor, 0, tamanho);
+ 	resultado = busca_binaria (chave, vetor, 0, tamanho);
 	
 	if (resultado==-1)
 		cout << "O valor procurado não foi encontrado." << endl;
@@ -45,7 +45,7 @@ int main() {
 }
 
 
-int PesquisaBinaria (int x, int v[], int e, int d){
+int busca_binaria (int x, int v[], int e, int d){
 	int meio = (e + d)/2;
 
 	if (v[meio] == x)
@@ -54,9 +54,9 @@ int PesquisaBinaria (int x, int v[], int e, int d){
 		return -1; // não encontrado
 	else
 		if (v[meio] < x)
-			return PesquisaBinaria(x, v, meio+1,      d);
+			return busca_binaria(x, v, meio+1,      d);
 		else
-			return PesquisaBinaria(x, v,      e, meio-1);
+			return busca_binaria(x, v,      e, meio-1);
 }
 
 void junta(int vet[], int inicio, int meio, int fim, int vet_aux[]) {
